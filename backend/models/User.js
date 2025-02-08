@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -25,7 +25,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'organiser', 'admin'],
         default: 'user',
-    }
+    },
+    eventsCreated: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Event',
+    }],
+    ticketsPurchased: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Transaction',
+    }]
 }, {timestamps: true});
 
 const User = mongoose.model("User", userSchema);

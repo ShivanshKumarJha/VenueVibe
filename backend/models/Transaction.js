@@ -16,8 +16,15 @@ const transactionSchema = new mongoose.Schema({
         quantity: {type: Number, required: true},
         price: {type: Number, required: true},
     }],
-    totalAmount: {type: Number, required: true},
-    paymentStatus: {type: String, enum: ["pending", "completed", "failed"], default: "pending"},
+    totalAmount: {
+        type: Number,
+        required: true
+    },
+    paymentStatus: {
+        type: String,
+        enum: ["pending", "completed", "failed"],
+        default: "pending"
+    },
 }, {timestamps: true});
 
 const Transaction = mongoose.model("Transaction", transactionSchema);

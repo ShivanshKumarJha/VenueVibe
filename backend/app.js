@@ -1,4 +1,5 @@
 import * as path from "node:path";
+import * as fs from "node:fs";
 import express from "express";
 import cors from "cors";
 import {fileURLToPath} from "url";
@@ -29,9 +30,20 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', routes);
+const imagesDir = path.join(__dirname, 'images');
+if (!fs.existsSync(imagesDir)) {
+    fs.mkdirSync(imagesDir, {recursive: true});
+}
 
-app.listen(PORT, () => {
-    console.log(`Server running on PORT : ${PORT}`)
-    connectDB();
-})
+app.use('/', routes);
+
+connectDB()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server running on PORT: ${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.error("Database connection failed:", error);
+        process.exit(1);
+    });
